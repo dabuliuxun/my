@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>你被共享充电宝“背刺”过吗？</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+      background: #1a1a1a;
+    }
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      color: #fff;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .bg-dark   { background: #2d0a0a; }
+    .bg-red    { background: #8b1a1a; }
+    .bg-black  { background: #0f0f0f; }
+    .bg-gradient { background: linear-gradient(180deg, #2d0a0a 0%, #5c1010 100%); }
+
+    .page-tag {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(245,197,66,0.2);
+      color: #f5c542;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+    .slide-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: #f5c542;
+      text-shadow: 0 0 20px rgba(245, 197, 66, 0.5);
+      line-height: 1.3;
+    }
+    .slide-desc {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #f0e6d3;
+      margin-bottom: 30px;
+      max-width: 300px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 40px;
+      background: #f5c542;
+      color: #2d0a0a;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 40px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin: 10px 0;
+      box-shadow: 0 5px 20px rgba(245, 197, 66, 0.4);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+    .data-number {
+      font-size: 60px;
+      font-weight: 900;
+      color: #f5c542;
+      line-height: 1;
+      margin: 10px 0;
+      text-shadow: 0 0 30px rgba(245, 197, 66, 0.7);
+    }
+    .data-label {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+    .calc-box {
+      background: rgba(0,0,0,0.5);
+      border-radius: 20px;
+      padding: 25px 20px;
+      margin: 20px 0;
+      width: 100%;
+      max-width: 300px;
+    }
+    .calc-input {
+      width: 80px;
+      font-size: 24px;
+      text-align: center;
+      background: transparent;
+      border: 2px solid #f5c542;
+      color: #f5c542;
+      border-radius: 10px;
+      padding: 8px;
+      margin: 0 10px;
+    }
+    .calc-result {
+      font-size: 22px;
+      color: #f5c542;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .agreement-text {
+      font-size: 10px;
+      color: #aaa;
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      max-height: 180px;
+      overflow-y: auto;
+      line-height: 1.8;
+      margin: 20px 0;
+      position: relative;
+    }
+    .hidden-fee {
+      color: #f5c542;
+      font-weight: bold;
+      cursor: pointer;
+      background: rgba(245,197,66,0.2);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    .game-message {
+      margin-top: 15px;
+      font-size: 16px;
+      min-height: 24px;
+    }
+    .case-swiper {
+      width: 100%;
+      height: 200px;
+      margin: 20px 0;
+    }
+    .case-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: left;
+      color: #f0e6d3;
+      font-size: 15px;
+      line-height: 1.6;
+      border-left: 4px solid #f5c542;
+    }
+    .case-title {
+      font-weight: bold;
+      color: #f5c542;
+      margin-bottom: 8px;
+    }
+    .quiz-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .quiz-btn {
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(245,197,66,0.5);
+      color: #f0e6d3;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    .quiz-btn:active {
+      background: #f5c542;
+      color: #2d0a0a;
+      font-weight: bold;
+      border-color: #f5c542;
+    }
+    .swipe-hint {
+      position: absolute;
+      bottom: 30px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .swipe-hint::after {
+      content: "↓";
+      font-size: 16px;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .highlight {
+      color: #f5c542;
+      font-weight: bold;
+    }
+    .assassin-list {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .assassin-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 20px 15px;
+      width: 90px;
+      font-size: 14px;
+      color: #f0e6d3;
+    }
+    .assassin-emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .chart-img {
+      width: 90%;
+      max-width: 340px;
+      border-radius: 16px;
+      border: 1px solid rgba(245,197,66,0.3);
+    }
+  </style>
+</head>
+<body>
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+
+    <!-- 第1页：发现问题 - 灵魂质问 -->
+    <div class="swiper-slide bg-gradient">
+      <div class="page-tag">🔍 发现问题</div>
+      <div style="font-size: 48px; margin-bottom: 10px;">🩸</div>
+      <div class="slide-title">你被共享充电宝<br>“背刺”过吗？</div>
+      <div class="slide-desc">出门扫码以为是“应急刚需”<br>实际却成了一场豪赌</div>
+      <div class="swipe-hint">向上滑动揭开真相</div>
+    </div>
+
+    <!-- 第2页：发现问题 - 数据冲击 -->
+    <div class="swiper-slide bg-dark">
+      <div class="page-tag">📊 发现问题</div>
+      <div class="data-number" id="counter">0</div>
+      <div class="data-label">2025年黑猫投诉量（条）</div>
+      <div class="slide-desc">同比增长 <span class="highlight">41.7%</span><br>8月单月突破 <span class="highlight">3000条</span></div>
+      <div class="slide-desc" style="font-size: 15px;">每分钟都在发生的痛</div>
+    </div>
+
+    <!-- 第3页：提出问题 - 三大刺客总览 -->
+    <div class="swiper-slide bg-black">
+      <div class="page-tag">❓ 提出问题</div>
+      <div class="slide-title">共享充电宝<br>到底有多少套路？</div>
+      <div class="assassin-list">
+        <div class="assassin-item">
+          <div class="assassin-emoji">💰</div>
+          <div>价格刺客</div>
+        </div>
+        <div class="assassin-item">
+          <div class="assassin-emoji">🔍</div>
+          <div>陷阱刺客</div>
+        </div>
+        <div class="assassin-item">
+          <div class="assassin-emoji">📵</div>
+          <div>归还刺客</div>
+        </div>
+      </div>
+      <div class="slide-desc">你踩过几个？<br>下拉看深度解剖</div>
+    </div>
+
+    <!-- 新增页面：投诉类型全景图 -->
+    <div class="swiper-slide bg-black">
+      <div class="page-tag">📊 问题有多严重？</div>
+      <div class="slide-title">投诉类型全景</div>
+      <img src="投诉类型占比对比.png" alt="投诉类型占比对比" class="chart-img" style="margin:20px 0;">
+      <img src="投诉类型占比分布.png" alt="投诉类型占比分布" style="width:70%; max-width:240px; border-radius:16px; margin-top:10px;">
+      <div class="slide-desc" style="font-size:15px;">计费异常、价格不透明、归还困难位列前三</div>
+      <div class="swipe-hint">三大刺客深度解剖</div>
+    </div>
+
+    <!-- 第4页：分析问题A - 价格刺客 + 计算器 + 场景收费图 -->
+    <div class="swiper-slide bg-red">
+      <div class="page-tag">🔬 分析问题</div>
+      <div class="slide-title">💰 价格刺客</div>
+      <div class="slide-desc">1小时被宰10元，封顶99元<br>比给特斯拉充电还贵</div>
+      <div class="calc-box">
+        <div style="color:#ccc; margin-bottom:10px;">算一算你的“被宰”金额</div>
+        <label>用了</label>
+        <input type="number" class="calc-input" id="hoursInput" value="1" min="0" step="0.5">
+        <label>小时</label>
+        <div style="margin-top:10px;">
+          <label>单价</label>
+          <select id="rateSelect" style="padding:8px; border-radius:8px; background:#222; color:#f5c542; border:1px solid #f5c542;">
+            <option value="4">4元/时(地铁)</option>
+            <option value="8">8元/时(景区)</option>
+            <option value="10" selected>10元/时(酒吧街)</option>
+          </select>
+        </div>
+        <div class="calc-result" id="calcResult">被宰金额：10.00 元</div>
+      </div>
+      <!-- 场景收费标准图 (PNG) -->
+      <img src="各场景收费标准对比.png" alt="各场景收费标准对比" class="chart-img" style="margin-top:15px;">
+      <div class="swipe-hint">下一题：计费陷阱</div>
+    </div>
+
+    <!-- 第5页：分析问题B - 陷阱刺客 + 找封顶价游戏 -->
+    <div class="swiper-slide bg-black">
+      <div class="page-tag">🔬 分析问题</div>
+      <div class="slide-title">🔍 陷阱刺客</div>
+      <div class="slide-desc">不足1分钟按30分钟计费<br>封顶价藏在最深角落</div>
+      <div class="agreement-text" id="agreementText">
+        欢迎使用共享充电宝服务。本服务收费标准：<br>
+        免费时长：0分钟<br>
+        计费规则：不足30分钟按30分钟计算<br>
+        每小时费用：8元<br>
+        服务说明：...<br>
+        注意事项：...<br>
+        特别提示：归还后若系统未识别，将持续计费<br>
+        <span class="hidden-fee" id="hiddenFee">封顶金额：99元/次</span><br>
+        最终解释权归本公司所有。
+      </div>
+      <div class="game-message" id="gameMsg" style="color:#f5c542;"></div>
+      <button class="btn" id="findFeeBtn" style="font-size:16px; padding:10px 25px;">点击找出封顶价</button>
+      <div class="swipe-hint">还有一种刺客...</div>
+    </div>
+
+    <!-- 第6页：分析问题C - 归还刺客 + 客服模拟 -->
+    <div class="swiper-slide bg-dark">
+      <div class="page-tag">🔬 分析问题</div>
+      <div class="slide-title">📵 归还刺客</div>
+      <div class="slide-desc">还了还扣钱，跑断腿没人管<br>客服80%是AI机械回复</div>
+      <div style="background:#111; border-radius:16px; padding:20px; width:100%; max-width:300px; margin:20px 0; text-align:left;">
+        <div style="color:#f5c542; margin-bottom:12px;">💬 在线客服</div>
+        <div style="color:#888; margin:8px 0;">你：归还成功但一直扣费！</div>
+        <div style="background:#2a2a2a; padding:8px; border-radius:8px; margin:8px 0;">🤖 智能客服：请您提供订单号</div>
+        <div style="color:#888; margin:8px 0;">你：123456789</div>
+        <div style="background:#2a2a2a; padding:8px; border-radius:8px;">🤖 智能客服：正在查询，请稍候...</div>
+        <div style="color:#f5c542; margin-top:12px; font-size:13px;">⏳ 人工客服排队中... 前面还有47人</div>
+      </div>
+    </div>
+
+    <!-- 第7页：分析问题佐证 - 真实案例滑动 -->
+    <div class="swiper-slide bg-gradient">
+      <div class="page-tag">📋 真实案例</div>
+      <div class="slide-title">这些故事正在发生</div>
+      <div style="width:100%; max-width:320px; margin:20px auto;">
+        <div class="swiper caseSwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="case-card">
+                <div class="case-title">王女士</div>
+                充电1小时15分钟，被扣20元。<br>客服以“已公示”为由拒退款。
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="case-card">
+                <div class="case-title">李先生</div>
+                归还成功却被扣99元封顶，<br>耗时3天沟通近10次才退回。
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="case-card">
+                <div class="case-title">张女士</div>
+                跟着导航跑40分钟，3个归还点都满位，<br>反被多扣8元。
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination" style="position:relative; margin-top:10px;"></div>
+        </div>
+      </div>
+      <div style="color:#ccc; font-size:14px;">← 左右滑动查看更多 →</div>
+      <div class="swipe-hint">哪家品牌最坑？</div>
+    </div>
+
+    <!-- 新增页面：品牌投诉排行榜（PNG轮播） -->
+    <div class="swiper-slide bg-black">
+      <div class="page-tag">📋 品牌真相</div>
+      <div class="slide-title">哪家投诉最多？</div>
+      <div class="swiper brandChartSwiper" style="width:100%; max-width:340px; height:260px; margin:20px auto;">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" style="display:flex; justify-content:center; align-items:center;">
+            <img src="各品牌投诉占比对比.png" alt="品牌投诉对比" style="width:100%; border-radius:16px;">
+          </div>
+          <div class="swiper-slide" style="display:flex; justify-content:center; align-items:center;">
+            <img src="品牌投诉占比构成.png" alt="品牌占比构成" style="width:100%; border-radius:16px;">
+          </div>
+          <div class="swiper-slide" style="display:flex; justify-content:center; align-items:center;">
+            <img src="品牌投诉占比面积图.png" alt="品牌面积图" style="width:100%; border-radius:16px;">
+          </div>
+        </div>
+        <div class="swiper-pagination" style="position:relative; margin-top:10px;"></div>
+      </div>
+      <div style="color:#ccc; font-size:14px;">← 左右滑动查看不同品牌数据 →</div>
+      <div class="swipe-hint">如何破局？</div>
+    </div>
+
+    <!-- 第8页：回答问题 - 自律公约 -->
+    <div class="swiper-slide bg-black">
+      <div class="page-tag">📜 回答问题</div>
+      <div class="slide-title">北京已写入自律公约</div>
+      <div style="text-align:left; max-width:300px; font-size:16px; line-height:2; color:#f0e6d3;">
+        ✔ 扫码前须明码标价<br>
+        ✔ 计时单位不超过15分钟，不满不收费<br>
+        ✔ 48小时内必须受理投诉
+      </div>
+      <div style="margin-top:20px; color:#f5c542;">全国8家企业已签署<br>这就是你的“尚方宝剑”</div>
+      <div class="swipe-hint">下一步：行动指南</div>
+    </div>
+
+    <!-- 第9页：解决问题 - 三要三不要 -->
+    <div class="swiper-slide bg-red">
+      <div class="page-tag">🛡️ 解决问题</div>
+      <div class="slide-title">三要三不要</div>
+      <div style="text-align:left; max-width:280px; font-size:17px; line-height:2.2; color:#f0e6d3;">
+        ✅ 要计时截屏<br>
+        ✅ 要找附近网点归还<br>
+        ✅ 要保留扣费凭证<br>
+        ❌ 不要盲扫即借<br>
+        ❌ 不要信APP推荐<br>
+        ❌ 不要放弃维权
+      </div>
+      <button class="btn" id="startQuizBtn" style="margin-top:30px;">测测我的避坑指数</button>
+    </div>
+
+    <!-- 第10页：互动自测 + 海报 -->
+    <div class="swiper-slide bg-gradient" id="quizSlide">
+      <div class="page-tag">🧪 自测</div>
+      <div class="slide-title">🔋 测测你的“被背刺”指数</div>
+      <div id="quizContainer">
+        <div id="questionText" style="font-size:18px; margin-bottom:20px; color:#f0e6d3;"></div>
+        <div class="quiz-options" id="optionsContainer"></div>
+        <div style="margin-top:10px; color:#aaa; font-size:14px;" id="progressText">1/4</div>
+      </div>
+      <div id="quizResult" style="display:none;">
+        <div style="font-size:22px; margin-bottom:10px;" id="resultTitle"></div>
+        <div style="font-size:60px;" id="resultEmoji"></div>
+        <div style="font-size:18px; margin:10px 0; color:#f0e6d3;" id="resultDesc"></div>
+        <button class="btn" id="generatePoster">生成我的海报</button>
+      </div>
+    </div>
+
+    <!-- 第11页：海报结果页 -->
+    <div class="swiper-slide bg-dark" id="posterSlide">
+      <div class="page-tag">🎉 海报</div>
+      <div style="border: 2px solid #f5c542; border-radius: 24px; padding: 30px 20px; max-width: 300px; background: #1a0505;">
+        <div style="font-size: 20px; color: #f5c542; margin-bottom: 15px;">共享充电宝避坑指数</div>
+        <div style="font-size: 48px;" id="posterEmoji">😵</div>
+        <div style="font-size: 24px; font-weight: bold; color: #f5c542; margin: 10px 0;" id="posterScore">6分</div>
+        <div style="color: #ccc;" id="posterLevel">资深背刺大师</div>
+        <div style="margin-top: 20px; color: #aaa; font-size: 13px;">长按保存，转发提醒更多人</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  // ========== 音效引擎 ==========
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx;
+  function initAudio() {
+    if (!audioCtx) {
+      audioCtx = new AudioCtx();
+    }
+  }
+  function playBeep(freq = 800, type = 'square', duration = 0.1, vol = 0.15) {
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+  function playSuccessSound() {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    [660, 880, 1100].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.12;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.1);
+      osc.stop(now + i * 0.1 + 0.12);
+    });
+  }
+  function playClickSound() {
+    playBeep(1000, 'square', 0.06, 0.1);
+  }
+
+  // 激活音频
+  document.addEventListener('touchstart', function() {
+    initAudio();
+  }, { once: true });
+  document.addEventListener('click', function() {
+    initAudio();
+  }, { once: true });
+
+  // 给按钮绑定点击音效
+  document.querySelectorAll('.btn, .quiz-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      initAudio();
+      playClickSound();
+    });
+  });
+
+  // ========== 主滑动初始化 ==========
+  const mainSwiper = new Swiper('.mySwiper', {
+    direction: 'vertical',
+    mousewheel: false,
+    allowTouchMove: true,
+    speed: 600,
+  });
+
+  // ========== 第2页：数字动态滚动 ==========
+  const counterEl = document.getElementById('counter');
+  let counted = false;
+  function animateCounter() {
+    if (counted) return;
+    counted = true;
+    const target = 32000;
+    const duration = 1500;
+    const startTime = Date.now();
+    function update() {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      counterEl.textContent = Math.floor(progress * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+      else counterEl.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(update);
+  }
+  mainSwiper.on('slideChange', function () {
+    if (mainSwiper.activeIndex === 1) animateCounter();
+  });
+
+  // ========== 价格计算器 ==========
+  const hoursInput = document.getElementById('hoursInput');
+  const rateSelect = document.getElementById('rateSelect');
+  const calcResult = document.getElementById('calcResult');
+  function updateCalc() {
+    let hours = parseFloat(hoursInput.value) || 0;
+    const rate = parseFloat(rateSelect.value);
+    const halfHours = Math.ceil(hours * 2) / 2;
+    const total = halfHours * rate;
+    calcResult.textContent = `被宰金额：${total.toFixed(2)} 元`;
+  }
+  hoursInput.addEventListener('input', updateCalc);
+  rateSelect.addEventListener('change', updateCalc);
+  updateCalc();
+
+  // ========== 找封顶价游戏 ==========
+  const findFeeBtn = document.getElementById('findFeeBtn');
+  const hiddenFee = document.getElementById('hiddenFee');
+  const gameMsg = document.getElementById('gameMsg');
+  let feeFound = false;
+  hiddenFee.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!feeFound) {
+      feeFound = true;
+      gameMsg.textContent = '🎉 找到了！封顶99元，就藏在这行小字里！';
+      hiddenFee.style.background = '#f5c542';
+      hiddenFee.style.color = '#000';
+      initAudio();
+      playSuccessSound();
+    }
+  });
+  findFeeBtn.addEventListener('click', function() {
+    initAudio();
+    playClickSound();
+    if (!feeFound) {
+      gameMsg.textContent = '再仔细看看那堆协议文字...提示：字最小的地方';
+    }
+  });
+
+  // ========== 案例轮播 ==========
+  new Swiper('.caseSwiper', {
+    direction: 'horizontal',
+    pagination: {
+      el: '.caseSwiper .swiper-pagination',
+      clickable: true,
+    },
+    spaceBetween: 10,
+  });
+
+  // ========== 品牌图表轮播 ==========
+  new Swiper('.brandChartSwiper', {
+    direction: 'horizontal',
+    pagination: {
+      el: '.brandChartSwiper .swiper-pagination',
+      clickable: true,
+    },
+    spaceBetween: 10,
+  });
+
+  // ========== 自测逻辑 ==========
+  const questions = [
+    { text: "你遇到过归还后仍计费吗？", options: ["经常遇到", "偶尔遇到", "从未遇到"], scores: [3, 2, 0] },
+    { text: "你最多一次被扣过多少钱？", options: ["50元以上", "10-50元", "10元以内"], scores: [3, 2, 1] },
+    { text: "你找过客服吗？", options: ["找不到人工", "等很久才解决", "没找过"], scores: [3, 2, 0] },
+    { text: "你现在还会用共享充电宝吗？", options: ["打死不用", "偶尔应急", "经常用"], scores: [3, 1, 0] },
+  ];
+  let currentQ = 0;
+  let totalScore = 0;
+  const quizContainer = document.getElementById('quizContainer');
+  const quizResult = document.getElementById('quizResult');
+  const questionText = document.getElementById('questionText');
+  const optionsContainer = document.getElementById('optionsContainer');
+  const progressText = document.getElementById('progressText');
+
+  function showQuestion(index) {
+    if (index >= questions.length) {
+      showQuizResult();
+      return;
+    }
+    quizContainer.style.display = 'block';
+    quizResult.style.display = 'none';
+    const q = questions[index];
+    questionText.textContent = q.text;
+    optionsContainer.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', function() {
+        initAudio();
+        playClickSound();
+        totalScore += q.scores[i];
+        currentQ++;
+        progressText.textContent = `${currentQ+1}/${questions.length}`;
+        showQuestion(currentQ);
+      });
+      optionsContainer.appendChild(btn);
+    });
+    progressText.textContent = `${index+1}/${questions.length}`;
+  }
+
+  function showQuizResult() {
+    quizContainer.style.display = 'none';
+    quizResult.style.display = 'block';
+    let emoji, level, desc;
+    if (totalScore <= 2) {
+      emoji = '😎'; level = '幸运避坑人'; desc = '看来你还没被深度背刺，继续保持警惕！';
+    } else if (totalScore <= 6) {
+      emoji = '😟'; level = '入门级受害者'; desc = '经历过一些套路，但你还能忍。';
+    } else {
+      emoji = '😵'; level = '资深背刺大师'; desc = '你早已看透一切，共享充电宝的套路你了如指掌。';
+    }
+    document.getElementById('resultTitle').textContent = '你的背刺指数';
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultDesc').textContent = desc;
+    window.posterData = { emoji, score: totalScore, level };
+  }
+
+  // 滑动到自测页时自动开始
+  mainSwiper.on('slideChange', function () {
+    if (mainSwiper.activeIndex === 9) {
+      if (currentQ === 0 && totalScore === 0) {
+        showQuestion(0);
+      }
+    }
+  });
+
+  // 从“解决问题”页按钮跳转自测
+  document.getElementById('startQuizBtn').addEventListener('click', function() {
+    mainSwiper.slideTo(9);
+  });
+
+  // 生成海报
+  document.getElementById('generatePoster').addEventListener('click', function() {
+    const data = window.posterData || { emoji: '😵', score: 6, level: '资深背刺大师' };
+    document.getElementById('posterEmoji').textContent = data.emoji;
+    document.getElementById('posterScore').textContent = data.score + '分';
+    document.getElementById('posterLevel').textContent = data.level;
+    mainSwiper.slideTo(10);
+  });
+</script>
+</body>
+</html>
